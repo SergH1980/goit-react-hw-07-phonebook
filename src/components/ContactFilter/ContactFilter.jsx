@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterContacts } from 'redux/filter/filterSlice';
-import { getFilter } from 'redux/filter/filterSelector';
+import { selectFilter } from 'redux/filter/filterSelector';
 
 import { FilterWrap, FilterLabel, FilterInput } from './ContactFilter.styled';
 
 export default function ContainerFilter() {
   const dispatch = useDispatch();
-  const filterValue = useSelector(getFilter);
+  const filterValue = useSelector(selectFilter);
 
   const changeFilter = e => {
     dispatch(filterContacts(e.target.value.toLowerCase().trim()));

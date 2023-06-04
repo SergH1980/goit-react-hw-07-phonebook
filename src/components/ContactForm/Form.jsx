@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContactList } from 'redux/contacts/contactSelectors';
+import { selectContactList } from 'redux/contacts/contactSelectors';
 import { addContact } from 'redux/operations';
 
 import { Formik } from 'formik';
@@ -27,7 +27,7 @@ const SignupSchem = Yup.object().shape({
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const contactList = useSelector(getContactList);
+  const contactList = useSelector(selectContactList);
 
   return (
     <Formik

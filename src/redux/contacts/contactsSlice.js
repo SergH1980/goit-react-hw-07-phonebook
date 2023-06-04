@@ -23,53 +23,53 @@ function notify(data) {
   toast.warn(`${data} is already in contacts`, toastSettings);
 }
 
+const handlePending = state => {
+  state.isLoading = true;
+};
+
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+};
+
+const handleFetchFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.items = action.payload;
+};
+
+const handleAddFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.items.some(
+    contact =>
+      contact.name.toLowerCase().trim() ===
+      action.payload.name.toLowerCase().trim()
+  )
+    ? notify(action.payload.name)
+    : state.items.push(action.payload);
+};
+
+const handleDeleteFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.items = state.items.filter(({ id }) => id !== action.payload.id);
+};
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: contactsInitialeState,
-  extraReducers: {
-    [fetchContacts.pending](state, action) {
-      state.isLoading = true;
-    },
-    [fetchContacts.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items = action.payload;
-    },
-    [fetchContacts.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [addContact.pending](state, action) {
-      state.isLoading = true;
-    },
-    [addContact.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items.some(
-        contact =>
-          contact.name.toLowerCase().trim() ===
-          action.payload.name.toLowerCase().trim()
-      )
-        ? notify(action.payload.name)
-        : state.items.push(action.payload);
-    },
-    [addContact.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [deleteContact.pending](state, action) {
-      state.isLoading = true;
-    },
-    [deleteContact.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items = state.items.filter(({ id }) => id !== action.payload.id);
-    },
-    [deleteContact.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-  },
+  extraReducers: builder =>
+    builder
+      .addCase(fetchContacts.pending, handlePending)
+      .addCase(addContact.pending, handlePending)
+      .addCase(deleteContact.pending, handlePending)
+      .addCase(fetchContacts.rejected, handleRejected)
+      .addCase(addContact.rejected, handleRejected)
+      .addCase(deleteContact.rejected, handleRejected)
+      .addCase(fetchContacts.fulfilled, handleFetchFulfilled)
+      .addCase(addContact.fulfilled, handleAddFulfilled)
+      .addCase(deleteContact.fulfilled, handleDeleteFulfilled),
 });
 
 export const contactsReducer = contactsSlice.reducer;

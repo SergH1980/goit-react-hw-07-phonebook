@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { fetchContacts, deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContactList } from 'redux/contacts/contactSelectors';
-import { getFilter } from 'redux/filter/filterSelector';
+import {
+  // selectContactList,
+  selectFilteredContacts,
+} from 'redux/contacts/contactSelectors';
+// import { selectFilter } from 'redux/filter/filterSelector';
 
 import {
   ContactItemStyled,
@@ -19,13 +22,7 @@ export default function ContactItem() {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const unfilteredContacts = useSelector(getContactList);
-
-  const filter = useSelector(getFilter);
-
-  const contacts = unfilteredContacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter)
-  );
+  const contacts = useSelector(selectFilteredContacts);
 
   const reverseContacts = [...contacts].reverse();
   // console.log(reverseContacts);
