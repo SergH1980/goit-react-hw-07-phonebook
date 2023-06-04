@@ -28,6 +28,7 @@ export default function ContactItem() {
   );
 
   const reverseContacts = [...contacts].reverse();
+  // console.log(reverseContacts);
 
   if (reverseContacts.length < 1) {
     return (

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { fetchContacts, addContact, deleteContact } from 'redux/operations';
 
 const contactsInitialeState = {
   items: [],
@@ -25,23 +26,23 @@ function notify(data) {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: contactsInitialeState,
-  reducers: {
-    fetchingContactsInProgress(state) {
+  extraReducers: {
+    [fetchContacts.pending](state, action) {
       state.isLoading = true;
     },
-    fetchingContactsSuccess(state, action) {
+    [fetchContacts.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items = action.payload;
     },
-    fetchingContactsError(state, action) {
+    [fetchContacts.rejected](state, action) {
       state.isLoading = false;
       state.error = action.payload;
     },
-    addContactInProgress(state) {
+    [addContact.pending](state, action) {
       state.isLoading = true;
     },
-    addContactSuccess(state, action) {
+    [addContact.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items.some(
@@ -52,35 +53,23 @@ const contactsSlice = createSlice({
         ? notify(action.payload.name)
         : state.items.push(action.payload);
     },
-    addContactError(state, action) {
+    [addContact.rejected](state, action) {
       state.isLoading = false;
       state.error = action.payload;
     },
-    deleteContactInProgress(state) {
+    [deleteContact.pending](state, action) {
       state.isLoading = true;
     },
-    deleteContactSuccess(state, action) {
+    [deleteContact.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items = state.items.filter(({ id }) => id !== action.payload.id);
     },
-    deleteContactError(state, action) {
+    [deleteContact.rejected](state, action) {
       state.isLoading = false;
       state.error = action.payload;
     },
   },
 });
-
-export const {
-  fetchingContactsInProgress,
-  fetchingContactsSuccess,
-  fetchingContactsError,
-  addContactInProgress,
-  addContactSuccess,
-  addContactError,
-  deleteContactInProgress,
-  deleteContactSuccess,
-  deleteContactError,
-} = contactsSlice.actions;
 
 export const contactsReducer = contactsSlice.reducer;

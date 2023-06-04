@@ -13,7 +13,6 @@ import {
   SubmitButton,
   ErrorMessage,
 } from './Form.styled';
-import { fetchingContactsSuccess } from 'redux/contacts/contactsSlice';
 
 const SignupSchem = Yup.object().shape({
   name: Yup.string()
@@ -35,7 +34,7 @@ export default function ContactForm() {
       initialValues={{ name: '', phone: '' }}
       validationSchema={SignupSchem}
       onSubmit={(values, { resetForm }) => {
-        dispatch(addContact(values.name, values.phone));
+        dispatch(addContact(values));
 
         const toCompareName = contact => {
           return contact.name === values.name;
