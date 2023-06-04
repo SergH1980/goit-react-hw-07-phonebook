@@ -8,13 +8,9 @@ import ContactItem from 'components/ContactItem/ContactItem';
 export default function ContactList() {
   const contacts = useSelector(getContacts);
 
-  if (contacts.length < 1) {
-    return <EmptyList>No contacts in your phonebook!</EmptyList>;
-  } else {
-    return (
-      <ContactListStyle>
-        <ContactItem />
-      </ContactListStyle>
-    );
-  }
+  return (
+    <ContactListStyle>
+      <ContactItem />
+    </ContactListStyle>
+  );
 }

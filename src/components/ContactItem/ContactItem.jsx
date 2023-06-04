@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { fetchContacts, deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/contacts/contactSelectors';
+import { getContactList } from 'redux/contacts/contactSelectors';
 import { getFilter } from 'redux/filter/filterSelector';
 
 import {
@@ -8,25 +9,46 @@ import {
   ContactItemName,
   ContactItemNumber,
   ContactItemButton,
+  EmptyFilterResults,
 } from './ContactItem.styled';
-import { deleteContact } from 'redux/contacts/contactsSlice';
 
 export default function ContactItem() {
-  const unfilteredContacts = useSelector(getContacts);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const unfilteredContacts = useSelector(getContactList);
+
   const filter = useSelector(getFilter);
+
   const contacts = unfilteredContacts.filter(contact =>
     contact.name.toLowerCase().includes(filter)
   );
 
-  return contacts.map(contact => (
+  const reverseContacts = [...contacts].reverse();
+
+  if (reverseContacts.length < 1) {
+    return (
+      <EmptyFilterResults>
+        No contacts in your phonebook <br />
+        or
+        <br /> No contacts match your query
+      </EmptyFilterResults>
+    );
+  }
+
+  return reverseContacts.map(contact => (
     <ContactItemStyled key={contact.id}>
       <ContactItemName>{contact.name}:</ContactItemName>
-      <ContactItemNumber>{contact.number}</ContactItemNumber>
+      <ContactItemNumber>{contact.phone}</ContactItemNumber>
       <ContactItemButton
         id={contact.id}
         type="button"
-        onClick={() => dispatch(deleteContact(contact.id))}
+        onClick={() => {
+          dispatch(deleteContact(contact.id));
+        }}
       >
         Delete
       </ContactItemButton>

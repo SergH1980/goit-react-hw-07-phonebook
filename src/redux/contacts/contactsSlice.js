@@ -1,7 +1,11 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-const contactsInitialeState = [];
+const contactsInitialeState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
 
 const toastSettings = {
   position: 'top-center',
@@ -22,31 +26,61 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState: contactsInitialeState,
   reducers: {
-    addContact: {
-      reducer(state, action) {
-        state.some(
-          contact =>
-            contact.name.toLowerCase().trim() ===
-            action.payload.name.toLowerCase().trim()
-        )
-          ? notify(action.payload.name)
-          : state.push(action.payload);
-      },
-      prepare({ name, number }) {
-        return {
-          payload: {
-            name: name,
-            number: number,
-            id: nanoid(),
-          },
-        };
-      },
+    fetchingContactsInProgress(state) {
+      state.isLoading = true;
     },
-    deleteContact: (state, { payload }) => {
-      return state.filter(({ id }) => id !== payload);
+    fetchingContactsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = action.payload;
+    },
+    fetchingContactsError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    addContactInProgress(state) {
+      state.isLoading = true;
+    },
+    addContactSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items.some(
+        contact =>
+          contact.name.toLowerCase().trim() ===
+          action.payload.name.toLowerCase().trim()
+      )
+        ? notify(action.payload.name)
+        : state.items.push(action.payload);
+    },
+    addContactError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    deleteContactInProgress(state) {
+      state.isLoading = true;
+    },
+    deleteContactSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = state.items.filter(({ id }) => id !== action.payload.id);
+    },
+    deleteContactError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const { addContact, deleteContact } = contactsSlice.actions;
+export const {
+  fetchingContactsInProgress,
+  fetchingContactsSuccess,
+  fetchingContactsError,
+  addContactInProgress,
+  addContactSuccess,
+  addContactError,
+  deleteContactInProgress,
+  deleteContactSuccess,
+  deleteContactError,
+} = contactsSlice.actions;
+
 export const contactsReducer = contactsSlice.reducer;

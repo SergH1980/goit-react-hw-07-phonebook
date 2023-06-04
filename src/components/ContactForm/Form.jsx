@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/contacts/contactSelectors';
+import { getContactList } from 'redux/contacts/contactSelectors';
+import { addContact } from 'redux/operations';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -12,14 +13,14 @@ import {
   SubmitButton,
   ErrorMessage,
 } from './Form.styled';
-import { addContact } from 'redux/contacts/contactsSlice';
+import { fetchingContactsSuccess } from 'redux/contacts/contactsSlice';
 
 const SignupSchem = Yup.object().shape({
   name: Yup.string()
     .min(3, 'Too Short!')
     .max(40, 'Too long!')
     .required(`Please enter valid information`),
-  number: Yup.string()
+  phone: Yup.string()
     .min(3, 'Too Short!')
     .max(30, 'Too long!')
     .required(`Please enter valid information`),
@@ -27,14 +28,15 @@ const SignupSchem = Yup.object().shape({
 
 export default function ContactForm() {
   const dispatch = useDispatch();
-  const contactList = useSelector(getContacts);
+  const contactList = useSelector(getContactList);
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validationSchema={SignupSchem}
       onSubmit={(values, { resetForm }) => {
-        dispatch(addContact(values));
+        dispatch(addContact(values.name, values.phone));
+
         const toCompareName = contact => {
           return contact.name === values.name;
         };
@@ -52,15 +54,15 @@ export default function ContactForm() {
           required
         />
         <ErrorMessage name="name" component="div" />
-        <FormLabel htmlFor="number">Number</FormLabel>
+        <FormLabel htmlFor="phone">Number</FormLabel>
         <Field
           type="tel"
-          name="number"
+          name="phone"
           // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
         />
-        <ErrorMessage name="number" component="div" />
+        <ErrorMessage name="phone" component="div" />
         <SubmitButton name="submit" type="submit">
           Add contact
         </SubmitButton>

@@ -8,10 +8,8 @@ import { FilterWrap, FilterLabel, FilterInput } from './ContactFilter.styled';
 export default function ContainerFilter() {
   const dispatch = useDispatch();
   const filterValue = useSelector(getFilter);
-  console.log(filterValue);
 
   const changeFilter = e => {
-    console.log(e.target.value);
     dispatch(filterContacts(e.target.value.toLowerCase().trim()));
   };
 
