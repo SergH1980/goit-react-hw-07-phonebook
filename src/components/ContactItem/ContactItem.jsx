@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { fetchContacts, deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  // selectContactList,
-  selectFilteredContacts,
-} from 'redux/contacts/contactSelectors';
-// import { selectFilter } from 'redux/filter/filterSelector';
+import { selectFilteredContacts } from 'redux/contacts/contactSelectors';
 
 import {
   ContactItemStyled,
@@ -25,7 +21,6 @@ export default function ContactItem() {
   const contacts = useSelector(selectFilteredContacts);
 
   const reverseContacts = [...contacts].reverse();
-  // console.log(reverseContacts);
 
   if (reverseContacts.length < 1) {
     return (
@@ -45,7 +40,7 @@ export default function ContactItem() {
         id={contact.id}
         type="button"
         onClick={() => {
-          dispatch(deleteContact(contact.id));
+          dispatch(deleteContact(contact));
         }}
       >
         Delete

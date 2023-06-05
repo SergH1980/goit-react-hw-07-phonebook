@@ -26,7 +26,7 @@ const toastSettings = {
   theme: 'light',
 };
 
-function notify(data) {
+function notifySameName(data) {
   toast.warn(`${data} is already in contacts`, toastSettings);
 }
 
@@ -53,8 +53,6 @@ export default function ContactForm() {
         // dispatch(addContact(values));
 
         const toCompareName = contact => {
-          // console.log(contact.name);
-          // console.log(values.name);
           return contact.name === values.name;
         };
 
@@ -62,7 +60,7 @@ export default function ContactForm() {
           dispatch(addContact(values));
           return resetForm();
         }
-        notify(values.name);
+        notifySameName(values.name);
       }}
     >
       <Form>
