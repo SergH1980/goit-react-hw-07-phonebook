@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContactList } from 'redux/contacts/contactSelectors';
 import { addContact } from 'redux/operations';
@@ -13,6 +14,21 @@ import {
   SubmitButton,
   ErrorMessage,
 } from './Form.styled';
+
+const toastSettings = {
+  position: 'top-center',
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'light',
+};
+
+function notify(data) {
+  toast.warn(`${data} is already in contacts`, toastSettings);
+}
 
 const SignupSchem = Yup.object().shape({
   name: Yup.string()
@@ -34,17 +50,19 @@ export default function ContactForm() {
       initialValues={{ name: '', phone: '' }}
       validationSchema={SignupSchem}
       onSubmit={(values, { resetForm }) => {
-        dispatch(addContact(values));
+        // dispatch(addContact(values));
 
         const toCompareName = contact => {
-          console.log(contact.name);
-          console.log(values.name);
+          // console.log(contact.name);
+          // console.log(values.name);
           return contact.name === values.name;
         };
 
         if (!contactList.some(toCompareName)) {
+          dispatch(addContact(values));
           return resetForm();
         }
+        notify(values.name);
       }}
     >
       <Form>
