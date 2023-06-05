@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { fetchContacts, deleteContact } from 'redux/operations';
+import React from 'react';
+import { deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectFilteredContacts,
@@ -17,12 +17,9 @@ import {
 
 export default function ContactItem() {
   const dispatch = useDispatch();
+
   const error = useSelector(selectError);
   const operation = useSelector(selectOperation);
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
 
   const contacts = useSelector(selectFilteredContacts);
 
@@ -46,7 +43,7 @@ export default function ContactItem() {
         id={contact.id}
         isLoading=""
         type="button"
-        onClick={event => {
+        onClick={() => {
           dispatch(deleteContact(contact));
         }}
       >
