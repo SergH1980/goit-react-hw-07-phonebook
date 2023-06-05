@@ -3,7 +3,6 @@ import { fetchContacts, deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectFilteredContacts,
-  selectIsLoading,
   selectError,
   selectOperation,
 } from 'redux/contacts/contactSelectors';
@@ -18,13 +17,12 @@ import {
 
 export default function ContactItem() {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const operation = useSelector(selectOperation);
 
   useEffect(() => {
     dispatch(fetchContacts());
-  }, []);
+  }, [dispatch]);
 
   const contacts = useSelector(selectFilteredContacts);
 
