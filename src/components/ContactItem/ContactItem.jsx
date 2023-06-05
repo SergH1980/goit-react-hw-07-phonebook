@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { fetchContacts, deleteContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilteredContacts } from 'redux/contacts/contactSelectors';
+import {
+  selectFilteredContacts,
+  selectIsLoading,
+  selectError,
+} from 'redux/contacts/contactSelectors';
 
 import {
   ContactItemStyled,
@@ -13,6 +17,8 @@ import {
 
 export default function ContactItem() {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -39,11 +45,13 @@ export default function ContactItem() {
       <ContactItemButton
         id={contact.id}
         type="button"
+        className="deleteButton"
         onClick={() => {
           dispatch(deleteContact(contact));
         }}
       >
-        Delete
+        {isLoading && !error && <div>Loading...</div>}
+        {!isLoading && !error && <div>Delete</div>}
       </ContactItemButton>
     </ContactItemStyled>
   ));

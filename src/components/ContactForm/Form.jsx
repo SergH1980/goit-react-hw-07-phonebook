@@ -1,7 +1,11 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContactList } from 'redux/contacts/contactSelectors';
+import {
+  selectContactList,
+  selectIsLoading,
+  selectError,
+} from 'redux/contacts/contactSelectors';
 import { addContact } from 'redux/operations';
 
 import { Formik } from 'formik';
@@ -44,7 +48,8 @@ const SignupSchem = Yup.object().shape({
 export default function ContactForm() {
   const dispatch = useDispatch();
   const contactList = useSelector(selectContactList);
-
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   return (
     <Formik
       initialValues={{ name: '', phone: '' }}
@@ -60,6 +65,7 @@ export default function ContactForm() {
           dispatch(addContact(values));
           return resetForm();
         }
+
         notifySameName(values.name);
       }}
     >
@@ -82,7 +88,8 @@ export default function ContactForm() {
         />
         <ErrorMessage name="phone" component="div" />
         <SubmitButton name="submit" type="submit">
-          Add contact
+          {isLoading && !error && <div>Loading...</div>}
+          {!isLoading && !error && <div>Add contact</div>}
         </SubmitButton>
       </Form>
     </Formik>
