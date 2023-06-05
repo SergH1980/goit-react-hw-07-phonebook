@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectContactList,
-  selectIsLoading,
+  // selectIsLoading,
   selectError,
   selectOperation,
 } from 'redux/contacts/contactSelectors';
