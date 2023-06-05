@@ -44,12 +44,13 @@ export default function ContactItem() {
       <ContactItemNumber>{contact.phone}</ContactItemNumber>
       <ContactItemButton
         id={contact.id}
+        isLoading=""
         type="button"
         onClick={event => {
           dispatch(deleteContact(contact));
         }}
       >
-        {operation === 'delete' && !error ? `Loading...` : `Delete`}
+        {operation === contact.id && !error ? `Loading...` : `Delete`}
       </ContactItemButton>
     </ContactItemStyled>
   ));

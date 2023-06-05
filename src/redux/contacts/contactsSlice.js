@@ -30,8 +30,12 @@ const handleAddFulfilled = (state, action) => {
 const handleDeleteFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
-  state.items = state.items.filter(({ id }) => id !== action.payload.id);
   state.operation = null;
+  const index = state.items.findIndex(
+    contact => contact.id === action.meta.arg.id
+  );
+
+  state.items.splice(index, 1);
 };
 
 const contactsSlice = createSlice({
@@ -47,9 +51,10 @@ const contactsSlice = createSlice({
         state.isLoading = true;
         state.operation = 'add';
       })
-      .addCase(deleteContact.pending, state => {
+      .addCase(deleteContact.pending, (state, action) => {
         state.isLoading = true;
-        state.operation = 'delete';
+
+        state.operation = `${action.meta.arg.id}`;
       })
       .addCase(fetchContacts.rejected, handleRejected)
       .addCase(addContact.rejected, handleRejected)
