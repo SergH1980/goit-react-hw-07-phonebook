@@ -24,7 +24,7 @@ export default function ContactItem() {
 
   useEffect(() => {
     dispatch(fetchContacts());
-  }, [dispatch]);
+  }, []);
 
   const contacts = useSelector(selectFilteredContacts);
 

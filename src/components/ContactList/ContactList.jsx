@@ -11,11 +11,12 @@ export default function ContactList() {
 
   return (
     <ContactListStyle>
-      {operation === 'fetch' && !error ? (
+      {/* {operation === 'fetch' && !error ? (
         <div>Loading. Please wait</div>
       ) : (
         <ContactItem />
-      )}
+      )} */}
+      <ContactItem />
     </ContactListStyle>
   );
 }
