@@ -88,7 +88,7 @@ export default function ContactForm() {
         />
         <ErrorMessage name="phone" component="div" />
         <SubmitButton name="submit" type="submit" id="add">
-          {isLoading && !error ? <div>Loading...</div> : <div>Add contact</div>}
+          {isLoading && !error ? `Loading...` : `Add contact`}
         </SubmitButton>
       </Form>
     </Formik>

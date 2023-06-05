@@ -5,6 +5,7 @@ const contactsInitialeState = {
   items: [],
   isLoading: false,
   error: null,
+  addIsLoading: false,
 };
 
 const handlePending = state => {

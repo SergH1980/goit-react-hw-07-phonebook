@@ -19,7 +19,6 @@ export default function ContactItem() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  let clickedContactID = ``;
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -48,12 +47,9 @@ export default function ContactItem() {
         type="button"
         onClick={event => {
           dispatch(deleteContact(contact));
-          clickedContactID = event.currentTarget.id;
-          console.log(clickedContactID);
-          console.log(contact.id === clickedContactID);
         }}
       >
-        {isLoading && !error ? <div>Loading...</div> : <div>Delete</div>}
+        {isLoading && !error ? `Loading...` : `Delete`}
       </ContactItemButton>
     </ContactItemStyled>
   ));
