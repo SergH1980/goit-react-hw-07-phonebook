@@ -55,7 +55,7 @@ export default function ContactForm() {
       initialValues={{ name: '', phone: '' }}
       validationSchema={SignupSchem}
       onSubmit={(values, { resetForm }) => {
-        // dispatch(addContact(values));
+        console.log(values);
 
         const toCompareName = contact => {
           return contact.name === values.name;
@@ -87,9 +87,8 @@ export default function ContactForm() {
           required
         />
         <ErrorMessage name="phone" component="div" />
-        <SubmitButton name="submit" type="submit">
-          {isLoading && !error && <div>Loading...</div>}
-          {!isLoading && !error && <div>Add contact</div>}
+        <SubmitButton name="submit" type="submit" id="add">
+          {isLoading && !error ? <div>Loading...</div> : <div>Add contact</div>}
         </SubmitButton>
       </Form>
     </Formik>
