@@ -37,8 +37,11 @@ export default function ContactForm() {
         dispatch(addContact(values));
 
         const toCompareName = contact => {
+          console.log(contact.name);
+          console.log(values.name);
           return contact.name === values.name;
         };
+
         if (!contactList.some(toCompareName)) {
           return resetForm();
         }
