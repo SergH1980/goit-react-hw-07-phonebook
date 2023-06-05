@@ -56,7 +56,7 @@ export default function ContactForm() {
       initialValues={{ name: '', phone: '' }}
       validationSchema={SignupSchem}
       onSubmit={(values, { resetForm }) => {
-        console.log(values);
+
 
         const toCompareName = contact => {
           return contact.name === values.name;
