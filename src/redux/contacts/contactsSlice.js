@@ -5,11 +5,7 @@ const contactsInitialeState = {
   items: [],
   isLoading: false,
   error: null,
-  addIsLoading: false,
-};
-
-const handlePending = state => {
-  state.isLoading = true;
+  operation: null,
 };
 
 const handleRejected = (state, action) => {
@@ -21,18 +17,21 @@ const handleFetchFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
   state.items = action.payload;
+  state.operation = null;
 };
 
 const handleAddFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
   state.items.push(action.payload);
+  state.operation = null;
 };
 
 const handleDeleteFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
   state.items = state.items.filter(({ id }) => id !== action.payload.id);
+  state.operation = null;
 };
 
 const contactsSlice = createSlice({
@@ -40,9 +39,18 @@ const contactsSlice = createSlice({
   initialState: contactsInitialeState,
   extraReducers: builder =>
     builder
-      .addCase(fetchContacts.pending, handlePending)
-      .addCase(addContact.pending, handlePending)
-      .addCase(deleteContact.pending, handlePending)
+      .addCase(fetchContacts.pending, state => {
+        state.isLoading = true;
+        state.operation = 'fetch';
+      })
+      .addCase(addContact.pending, state => {
+        state.isLoading = true;
+        state.operation = 'add';
+      })
+      .addCase(deleteContact.pending, state => {
+        state.isLoading = true;
+        state.operation = 'delete';
+      })
       .addCase(fetchContacts.rejected, handleRejected)
       .addCase(addContact.rejected, handleRejected)
       .addCase(deleteContact.rejected, handleRejected)

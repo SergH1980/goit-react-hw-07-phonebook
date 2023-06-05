@@ -5,6 +5,7 @@ import {
   selectContactList,
   selectIsLoading,
   selectError,
+  selectOperation,
 } from 'redux/contacts/contactSelectors';
 import { addContact } from 'redux/operations';
 
@@ -48,8 +49,8 @@ const SignupSchem = Yup.object().shape({
 export default function ContactForm() {
   const dispatch = useDispatch();
   const contactList = useSelector(selectContactList);
-  const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const operation = useSelector(selectOperation);
   return (
     <Formik
       initialValues={{ name: '', phone: '' }}
@@ -88,7 +89,7 @@ export default function ContactForm() {
         />
         <ErrorMessage name="phone" component="div" />
         <SubmitButton name="submit" type="submit" id="add">
-          {isLoading && !error ? `Loading...` : `Add contact`}
+          {operation === 'add' && !error ? `Loading...` : `Add contact`}
         </SubmitButton>
       </Form>
     </Formik>

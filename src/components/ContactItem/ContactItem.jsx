@@ -5,6 +5,7 @@ import {
   selectFilteredContacts,
   selectIsLoading,
   selectError,
+  selectOperation,
 } from 'redux/contacts/contactSelectors';
 
 import {
@@ -19,6 +20,7 @@ export default function ContactItem() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const operation = useSelector(selectOperation);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -49,7 +51,7 @@ export default function ContactItem() {
           dispatch(deleteContact(contact));
         }}
       >
-        {isLoading && !error ? `Loading...` : `Delete`}
+        {operation === 'delete' && !error ? `Loading...` : `Delete`}
       </ContactItemButton>
     </ContactItemStyled>
   ));
